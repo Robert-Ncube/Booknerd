@@ -2,15 +2,14 @@ import React, { useState } from "react";
 import { MdOutlinePerson } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa";
 import { IoCartOutline } from "react-icons/io5";
-import { RiMenu2Line } from "react-icons/ri";
 import { CiSearch } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
-import { CiSettings } from "react-icons/ci";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { MdOutlineDashboard } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
+import logo from "../assets/whitebg-logo.png";
 
 import Button from "./Button";
 import { Link } from "react-router-dom";
@@ -19,7 +18,7 @@ const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openSearchBar, setOpenSearchBar] = useState(false);
 
-  const currentUser = true;
+  const currentUser = false;
 
   const dropdownlinks = [
     {
@@ -59,7 +58,7 @@ const Navbar = () => {
       <div className="flex flex-row max-w-full items-center justify-between border-b pb-4 border-gray-400">
         <div className="flex flex-row px-2 items-center justify-between gap-4 md:gap-8 w-full">
           <Link to={"/"}>
-            <RiMenu2Line size={30} className="font-bold" title="menu/home" />
+            <img src={logo} className="w-20 h-15" title="home" />
           </Link>
           <div className="relative w-full">
             <Button
@@ -128,9 +127,11 @@ const Navbar = () => {
               <MdOutlinePerson size={20} title="login" />
             </Link>
           )}
-          <FaRegHeart size={18} title="likes" />
+          <Link to={"/favourates"}>
+            <FaRegHeart size={18} title="favourates" />
+          </Link>
           <Button
-            title={"Cart"}
+            title={"0"}
             styles={
               "bg-tprimary flex flex-row gap-1 items-center px-4 py-1 rounded-md"
             }
