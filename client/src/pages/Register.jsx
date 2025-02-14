@@ -1,16 +1,23 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
+import { useForm } from "react-hook-form";
 
 const Register = () => {
   const [message, setMessage] = useState("");
-  //const { registerUser, signInWithGoogle } = useAuth();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
 
-  //   register user
-
-  const onSubmit = async (data) => {};
+  const onSubmit = async (data) => {
+    console.log("data:", data);
+  };
 
   const handleGoogleSignIn = async () => {};
+
   return (
     <div className="h-[calc(100vh-120px)] flex justify-center items-center ">
       <div className="w-full max-w-sm mx-auto bg-white shadow-md shadow-slate-800 rounded px-8 pt-6 pb-8 mb-4">
@@ -18,7 +25,7 @@ const Register = () => {
           Register
         </h2>
 
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -27,6 +34,7 @@ const Register = () => {
               Email
             </label>
             <input
+              {...register("email", { required: true })}
               type="email"
               name="email"
               id="email"
@@ -42,6 +50,7 @@ const Register = () => {
               Password
             </label>
             <input
+              {...register("password", { required: true })}
               type="password"
               name="password"
               id="password"

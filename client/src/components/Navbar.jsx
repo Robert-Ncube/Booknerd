@@ -13,8 +13,10 @@ import logo from "../assets/whitebg-logo.png";
 
 import Button from "./Button";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openSearchBar, setOpenSearchBar] = useState(false);
 
@@ -52,6 +54,12 @@ const Navbar = () => {
       icon: <RiLogoutBoxLine size={20} />,
     },
   ];
+
+  console.log(cartItems);
+
+  const totalBooksInCart = cartItems.reduce((total, book) => {
+    return total + book.quantity;
+  }, 0);
 
   return (
     <nav>
@@ -130,13 +138,15 @@ const Navbar = () => {
           <Link to={"/favourates"}>
             <FaRegHeart size={18} title="favourates" />
           </Link>
-          <Button
-            title={"0"}
-            styles={
-              "bg-tprimary flex flex-row gap-1 items-center px-4 py-1 rounded-md"
-            }
-            icon={<IoCartOutline />}
-          />
+          <Link to={"/cart"}>
+            <Button
+              title={cartItems.length > 0 ? totalBooksInCart : 0}
+              styles={
+                "bg-tprimary flex flex-row gap-1 items-center px-4 py-1 rounded-md"
+              }
+              icon={<IoCartOutline />}
+            />
+          </Link>
         </div>
       </div>
     </nav>

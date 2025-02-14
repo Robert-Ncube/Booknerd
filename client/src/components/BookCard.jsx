@@ -5,15 +5,16 @@ import { getImageURL } from "../utils/getImgUrl";
 import { Link } from "react-router-dom";
 import Button from "./Button";
 
-//import { useDispatch } from "react-redux";
-//import { addToCart } from "../../redux/features/cart/cartSlice";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/features/CartSlice";
 
 const BookCard = ({ book }) => {
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleAddToCart = (product) => {
-    //dispatch(addToCart(product));
+    dispatch(addToCart(product));
   };
+
   return (
     <div className=" rounded-lg transition-shadow duration-300 bg-slate-200 shadow-sm shadow-slate-800">
       <div className="flex flex-col sm:flex-row sm:items-center sm:h-72  sm:justify-center gap-4">
@@ -44,12 +45,13 @@ const BookCard = ({ book }) => {
               $ {book?.oldPrice}
             </span>
           </p>
-          <Button
+          <button
             onClick={() => handleAddToCart(book)}
-            styles="bg-tprimary px-6 py-2 rounded-lg space-x-1 flex items-center gap-1 "
-            icon={<FiShoppingCart className="" />}
-            title={"Add to Cart"}
-          />
+            className="bg-tprimary px-6 py-2 rounded-lg space-x-1 flex items-center gap-1 font-bold"
+          >
+            <FiShoppingCart className="" />
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>

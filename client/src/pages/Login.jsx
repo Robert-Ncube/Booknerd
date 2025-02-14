@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
   const [message, setMessage] = useState("");
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
 
-  const onSubmit = async (data) => {};
-
-  const handleSubmit = () => {};
+  const onSubmit = async (data) => {
+    console.log("data:", data);
+  };
 
   const handleGoogleSignIn = async () => {};
+
   return (
     <div className="h-[calc(100vh-120px)] flex justify-center items-center ">
       <div className="w-full max-w-sm mx-auto bg-white shadow-md shadow-slate-800 rounded px-8 pt-6 pb-8 mb-4">
@@ -17,7 +25,7 @@ const Login = () => {
           Login
         </h2>
 
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -26,6 +34,7 @@ const Login = () => {
               Email
             </label>
             <input
+              {...register("email", { required: true })}
               type="email"
               name="email"
               id="email"
@@ -41,6 +50,7 @@ const Login = () => {
               Password
             </label>
             <input
+              {...register("password", { required: true })}
               type="password"
               name="password"
               id="password"
@@ -58,7 +68,7 @@ const Login = () => {
           </div>
         </form>
         <p className="align-baseline font-medium mt-4 text-sm">
-          Haven't an account? Please{" "}
+          Don't an account? Please{" "}
           <Link to="/register" className="text-blue-500 hover:text-blue-700">
             Register
           </Link>
