@@ -10,18 +10,26 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import BookCard from "../BookCard";
-//import { useFetchAllBooksQuery } from "../../redux/features/books/booksApi";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllBooks } from "../../redux/features/bookSlice";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Recommened = () => {
-  const [books, setBooks] = useState([]);
-
-  //const { data: books = [] } = useFetchAllBooksQuery();
+  const dispatch = useDispatch();
+  const { books, isLoading } = useSelector((state) => state.books);
 
   useEffect(() => {
-    fetch("books.json")
-      .then((response) => response.json())
-      .then((data) => setBooks(data));
+    dispatch(fetchAllBooks());
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-full min-h-screen gap-4">
+        <AiOutlineLoading3Quarters className="text-5xl animate-spin" />
+        <h2 className="font-rubik text-sm ">Loading</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="py-16">

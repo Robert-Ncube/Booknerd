@@ -25,7 +25,7 @@ const CheckoutPage = () => {
   const onSubmit = async (data) => {
     const newOrder = {
       name: data.name,
-      email: data.email || currentUser?.email,
+      email: currentUser?.email,
       address: {
         city: data.city,
         country: data.country,
@@ -91,13 +91,12 @@ const CheckoutPage = () => {
                     <div className="md:col-span-5">
                       <label html="email">Email Address</label>
                       <input
-                        {...register("email", { required: true })}
                         type="text"
                         name="email"
                         id="email"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        //disabled
-                        // defaultValue={currentUser?.email}
+                        disabled
+                        defaultValue={currentUser?.email}
                         placeholder="email@domain.com"
                       />
                     </div>

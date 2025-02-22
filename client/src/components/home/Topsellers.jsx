@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BookCard from "../../components/BookCard";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -11,7 +12,8 @@ import { Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-//import { useFetchAllBooksQuery } from "../../redux/features/books/booksApi";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllBooks } from "../../redux/features/bookSlice";
 
 const categories = [
   "Choose a genre",
@@ -22,13 +24,12 @@ const categories = [
 ];
 
 const TopSellers = () => {
+  const dispatch = useDispatch();
   const [selectedCategory, setSelectedCategory] = useState("Choose a genre");
-  const [books, setBooks] = useState([]);
+  const { books, isLoading } = useSelector((state) => state.books);
 
   useEffect(() => {
-    fetch("books.json")
-      .then((response) => response.json())
-      .then((data) => setBooks(data));
+    dispatch(fetchAllBooks());
   }, []);
 
   const filteredBooks =
@@ -37,6 +38,15 @@ const TopSellers = () => {
       : books.filter(
           (book) => book.category === selectedCategory.toLowerCase()
         );
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-full min-h-screen gap-4">
+        <AiOutlineLoading3Quarters className="text-5xl animate-spin" />
+        <h2 className="font-rubik text-sm ">Loading</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="py-10">

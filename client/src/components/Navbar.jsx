@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const Cart = useSelector((state) => state.cart);
   const cartItems = useSelector((state) => state.cart.cartItems);
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openSearchBar, setOpenSearchBar] = useState(false);
@@ -55,7 +56,8 @@ const Navbar = () => {
     },
   ];
 
-  console.log(cartItems);
+  console.log("cartItems", cartItems);
+  console.log("Cart", Cart);
 
   const totalBooksInCart = cartItems.reduce((total, book) => {
     return total + book.quantity;

@@ -8,7 +8,7 @@
     "coverImage": "book-1.png",
     "oldPrice": 29.99,
     "newPrice": 19.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -20,7 +20,7 @@
     "coverImage": "book-2.png",
     "oldPrice": 24.99,
     "newPrice": 14.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -32,7 +32,7 @@
     "coverImage": "book-3.png",
     "oldPrice": 39.99,
     "newPrice": 29.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -44,7 +44,7 @@
     "coverImage": "book-4.png",
     "oldPrice": 49.99,
     "newPrice": 39.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -56,7 +56,7 @@
     "coverImage": "book-5.png",
     "oldPrice": 19.99,
     "newPrice": 21.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -68,7 +68,7 @@
     "coverImage": "book-6.png",
     "oldPrice": 44.99,
     "newPrice": 34.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -80,7 +80,7 @@
     "coverImage": "book-7.png",
     "oldPrice": 59.99,
     "newPrice": 49.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -92,7 +92,7 @@
     "coverImage": "book-8.png",
     "oldPrice": 21.99,
     "newPrice": 16.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -104,7 +104,7 @@
     "coverImage": "book-9.png",
     "oldPrice": 27.99,
     "newPrice": 18.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -116,7 +116,7 @@
     "coverImage": "book-10.png",
     "oldPrice": 14.99,
     "newPrice": 10.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -128,7 +128,7 @@
     "coverImage": "book-11.png",
     "oldPrice": 32.99,
     "newPrice": 25.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -140,7 +140,7 @@
     "coverImage": "book-12.png",
     "oldPrice": 19.99,
     "newPrice": 36.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -152,7 +152,7 @@
     "coverImage": "book-13.png",
     "oldPrice": 26.99,
     "newPrice": 21.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -164,7 +164,7 @@
     "coverImage": "book-14.png",
     "oldPrice": 34.99,
     "newPrice": 24.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -176,7 +176,7 @@
     "coverImage": "book-15.png",
     "oldPrice": 22.99,
     "newPrice": 12.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -188,7 +188,7 @@
     "coverImage": "book-16.png",
     "oldPrice": 24.99,
     "newPrice": 19.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -200,7 +200,7 @@
     "coverImage": "book-17.png",
     "oldPrice": 49.99,
     "newPrice": 39.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -212,7 +212,7 @@
     "coverImage": "book-18.png",
     "oldPrice": 18.99,
     "newPrice": 12.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -224,7 +224,7 @@
     "coverImage": "book-19.png",
     "oldPrice": 35.99,
     "newPrice": 27.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   },
   {
@@ -236,7 +236,7 @@
     "coverImage": "book-20.png",
     "oldPrice": 24.99,
     "newPrice": 14.99,
-    "quantity": 0,
+    "stock": 20,
     "favourate": false
   }
 ]

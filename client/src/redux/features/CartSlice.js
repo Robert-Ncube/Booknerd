@@ -30,6 +30,7 @@ const BooksCartSlice = createSlice({
       const item = state.cartItems.find(
         (item) => item._id === action.payload._id
       );
+
       if (item) {
         state.totalPrice -= item.newPrice * item.quantity;
         state.cartItems = state.cartItems.filter(
@@ -42,15 +43,19 @@ const BooksCartSlice = createSlice({
       const item = state.cartItems.find(
         (item) => item._id === action.payload._id
       );
+
       if (item) {
         item.quantity++;
         state.totalPrice += item.newPrice;
+      } else {
+        toast.error(`${item.title} is out of stock!`);
       }
     },
     decrementQuantity: (state, action) => {
       const item = state.cartItems.find(
         (item) => item._id === action.payload._id
       );
+
       if (item && item.quantity > 1) {
         item.quantity--;
         state.totalPrice -= item.newPrice;

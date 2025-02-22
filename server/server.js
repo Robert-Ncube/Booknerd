@@ -5,6 +5,8 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 
+import AllRoutes from "./routes/AllRoutes.js";
+
 const app = express();
 
 dotenv.config();
@@ -15,7 +17,7 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://booknerd-client.vercel.app"],
+    origin: ["http://localhost:5173", "https://booknerd-client.vercel.app"],
     credentials: true,
     allowedHeaders: [
       "Origin",
@@ -33,11 +35,9 @@ app.use(
 );
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("BookNerd server is running!");
-});
+app.use("/api", AllRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 mongoose
   .connect(process.env.MONGODB_URI)
