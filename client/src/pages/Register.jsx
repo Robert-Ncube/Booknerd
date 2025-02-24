@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../context/authContext";
+import toast from "react-hot-toast";
 
 const Register = () => {
+  const { registerUser, signInWithGoogle } = useAuth();
+
   const [message, setMessage] = useState("");
   const {
     register,
@@ -14,9 +18,31 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     console.log("data:", data);
+    try {
+      const response = await registerUser(data?.email, data?.password);
+      if (response) {
+        toast.success("User registered successfully!");
+        setMessage("");
+        navigate("/");
+      } else {
+        throw new Error("Invalid credentials!");
+      }
+    } catch (error) {
+      setMessage("Please provide a valid email and password!");
+      console.error(error.message);
+    }
   };
 
-  const handleGoogleSignIn = async () => {};
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+      toast.success("Logged in successfully!");
+      navigate("/");
+    } catch (error) {
+      toast.success("Google login failed!");
+      console.error(error.message);
+    }
+  };
 
   return (
     <div className="h-[calc(100vh-120px)] flex justify-center items-center ">
@@ -62,7 +88,10 @@ const Register = () => {
             <p className="text-red-500 text-xs italic mb-3">{message}</p>
           )}
           <div>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 w-full rounded focus:outline-none">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 w-full rounded focus:outline-none"
+            >
               Register
             </button>
           </div>

@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import "sweetalert2/dist/sweetalert2.js";
+import { AuthProvider } from "./context/AuthContext";
 
 import Home from "./pages/Home";
 import Orders from "./pages/Orders";
@@ -16,27 +17,29 @@ import CheckoutPage from "./pages/Checkout";
 
 function App() {
   return (
-    <main className="min-h-screen max-w-screen-2xl mx-auto px-4 md:px-10 py-6">
-      <Toaster position="top-right" />
-      <Router>
-        <header>
-          <Navbar />
-        </header>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/favourates" element={<Favourates />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-        </Routes>
-      </Router>
-      <footer>
-        <Footer />
-      </footer>
-    </main>
+    <AuthProvider>
+      <main className="min-h-screen max-w-screen-2xl mx-auto px-4 md:px-10 py-6">
+        <Toaster position="top-right" />
+        <Router>
+          <header>
+            <Navbar />
+          </header>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/favourates" element={<Favourates />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+          </Routes>
+        </Router>
+        <footer>
+          <Footer />
+        </footer>
+      </main>
+    </AuthProvider>
   );
 }
 

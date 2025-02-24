@@ -14,6 +14,7 @@ import logo from "../assets/whitebg-logo.png";
 import Button from "./Button";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useAuth } from "../context/authContext";
 
 const Navbar = () => {
   const Cart = useSelector((state) => state.cart);
@@ -21,7 +22,8 @@ const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openSearchBar, setOpenSearchBar] = useState(false);
 
-  const currentUser = false;
+  const { currentUser, signOutUser } = useAuth();
+  console.log("user:", currentUser);
 
   const dropdownlinks = [
     {
@@ -49,11 +51,6 @@ const Navbar = () => {
       path: "/checkout",
       icon: <IoBagCheckOutline size={20} />,
     },
-    {
-      label: "Logout",
-      path: "/logout",
-      icon: <RiLogoutBoxLine size={20} />,
-    },
   ];
 
   console.log("cartItems", cartItems);
@@ -62,6 +59,11 @@ const Navbar = () => {
   const totalBooksInCart = cartItems.reduce((total, book) => {
     return total + book.quantity;
   }, 0);
+
+  const handleSignOut = () => {
+    signOutUser();
+    setOpenDropdown(false);
+  };
 
   return (
     <nav>
@@ -97,11 +99,20 @@ const Navbar = () => {
                 className="bg-none p-0"
                 onClick={() => setOpenDropdown(!openDropdown)}
               >
-                <FaRegUserCircle
-                  size={20}
-                  title="account"
-                  className="text-primary p-1 rounded-full h-full w-full shadow-sm shadow-black hover:bg-slate-200"
-                />
+                {currentUser?.photoURL ? (
+                  <img
+                    src={currentUser.photoURL}
+                    alt="user profile"
+                    title={currentUser?.displayName}
+                    className=" p-1 rounded-full h-10 w-10 shadow-sm shadow-black hover:bg-slate-200"
+                  />
+                ) : (
+                  <FaRegUserCircle
+                    size={20}
+                    title={currentUser?.displayName}
+                    className="text-primary p-1 rounded-full h-full w-full shadow-sm shadow-black hover:bg-slate-200"
+                  />
+                )}
               </button>
 
               {openDropdown && (
@@ -128,6 +139,16 @@ const Navbar = () => {
                         </button>
                       </li>
                     ))}
+                    <li className="py-1 hover:bg-gray-200 p-1">
+                      <button
+                        title="logout"
+                        onClick={handleSignOut}
+                        className="flex flex-row w-full items-center gap-2"
+                      >
+                        <RiLogoutBoxLine size={20} />
+                        Logout
+                      </button>
+                    </li>
                   </ul>
                 </div>
               )}

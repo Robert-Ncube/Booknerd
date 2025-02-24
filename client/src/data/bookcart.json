@@ -1,0 +1,22 @@
+{
+  "cartId": "unique_cart_id",
+  "userId": "unique_user_id",
+  "items": [
+    {
+      "_id": 1,
+      "title": "How to Grow Your Online Store",
+      "description": "Learn the best strategies to grow your online store in today's competitive market.",
+      "category": "business",
+      "trending": true,
+      "coverImage": "book-1.png",
+      "oldPrice": 29.99,
+      "newPrice": 19.99,
+      "stock": 20,
+      "favourate": false
+    }
+  ],
+  "totalQuantity": 1,
+  "totalPrice": 19.99,
+  "createdAt": "2025-02-24T10:50:00Z",
+  "updatedAt": "2025-02-24T10:50:00Z"
+}
