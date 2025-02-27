@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
+import { createOrder } from "../redux/features/CartSlice";
 
 const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalPrice = useSelector((state) => state.cart.totalPrice);
 
-  //const { currentUser } = useAuth();
-  const currentUser = {
-    email: "test@example.com",
-    name: "John Doe",
-  };
+  const { currentUser, isLoading } = useAuth();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -24,7 +25,8 @@ const CheckoutPage = () => {
 
   const onSubmit = async (data) => {
     const newOrder = {
-      name: data.name,
+      userId: currentUser?.uid,
+      username: currentUser?.displayName,
       email: currentUser?.email,
       address: {
         city: data.city,
@@ -33,21 +35,30 @@ const CheckoutPage = () => {
         zipcode: data.zipcode,
       },
       phone: data.phone,
-      products: cartItems.map((item) => ({
-        productId: item._id,
+      books: cartItems.map((item) => ({
+        bookId: item._id,
         quantity: item.quantity,
       })),
-      totalPrice: totalPrice,
+      totalPrice: Number(parseFloat(totalPrice).toFixed(2)), // Convert to a number
     };
 
     console.log(newOrder);
+    try {
+      const result = await dispatch(createOrder(newOrder));
+      if (result.payload?.success) {
+        console.log("Order placed and stock updated!");
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Failed to create order:", error);
+    }
   };
 
   const totalBooks = cartItems.reduce((total, book) => {
     return total + book.quantity;
   }, 0);
 
-  //if (isLoading) return <div>Loading....</div>;
+  if (isLoading) return <div>Loading....</div>;
   return (
     <section>
       <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
@@ -80,11 +91,13 @@ const CheckoutPage = () => {
                     <div className="md:col-span-5">
                       <label htmlFor="full_name">Full Name</label>
                       <input
-                        {...register("name", { required: true })}
+                        // {...register("name", { required: true })}
                         type="text"
                         name="name"
                         id="name"
                         className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        disabled
+                        defaultValue={currentUser?.displayName}
                       />
                     </div>
 

@@ -1,11 +1,28 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
+import { getBaseURL } from "../../utils/getBaseURL";
+import axios from "axios";
 
 const initialState = {
   cartItems: [],
   totalPrice: 0,
-  Loading: false,
+  isLoading: false,
 };
+
+export const createOrder = createAsyncThunk(
+  "orders/create",
+  async (orderData, { rejectWithValue }) => {
+    try {
+      const url = `${getBaseURL()}/api/orders/create`;
+      const response = await axios.post(url, orderData);
+      console.log("API Response:", response);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating order:", error);
+      return rejectWithValue(error.response.data || "Unknown error occurred");
+    }
+  }
+);
 
 const BooksCartSlice = createSlice({
   name: "booksCart",
@@ -71,6 +88,23 @@ const BooksCartSlice = createSlice({
       state.totalPrice = 0;
       toast.success("Cart cleared!");
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createOrder.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createOrder.fulfilled, (state) => {
+        state.isLoading = false;
+        state.cartItems = [];
+        state.totalPrice = 0;
+        toast.success("Order placed successfully!");
+      })
+      .addCase(createOrder.rejected, (state, action) => {
+        state.isLoading = false;
+        toast.error("Failed to create the order!");
+        console.error("Error creating order: ", action.error);
+      });
   },
 });
 

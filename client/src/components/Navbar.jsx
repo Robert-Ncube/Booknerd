@@ -14,7 +14,7 @@ import logo from "../assets/whitebg-logo.png";
 import Button from "./Button";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useAuth } from "../context/authContext";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const Cart = useSelector((state) => state.cart);
@@ -99,20 +99,11 @@ const Navbar = () => {
                 className="bg-none p-0"
                 onClick={() => setOpenDropdown(!openDropdown)}
               >
-                {currentUser?.photoURL ? (
-                  <img
-                    src={currentUser.photoURL}
-                    alt="user profile"
-                    title={currentUser?.displayName}
-                    className=" p-1 rounded-full h-10 w-10 shadow-sm shadow-black hover:bg-slate-200"
-                  />
-                ) : (
-                  <FaRegUserCircle
-                    size={20}
-                    title={currentUser?.displayName}
-                    className="text-primary p-1 rounded-full h-full w-full shadow-sm shadow-black hover:bg-slate-200"
-                  />
-                )}
+                <FaRegUserCircle
+                  size={20}
+                  title={currentUser?.displayName || currentUser?.email}
+                  className="text-primary p-1 rounded-full h-full w-full shadow-sm shadow-black hover:bg-slate-200"
+                />
               </button>
 
               {openDropdown && (

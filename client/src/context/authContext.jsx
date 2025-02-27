@@ -44,6 +44,16 @@ export const AuthProvider = ({ children }) => {
       return true; // Sign-in was successful
     } catch (error) {
       console.error("Error signing in user:", error);
+      const errorCode = error.code;
+      const errorMessage = error.message;
+
+      if (errorCode === "auth/user-not-found") {
+        console.error("Error: User not found");
+      } else if (errorCode === "auth/wrong-password") {
+        console.error("Error: Incorrect password");
+      } else {
+        console.error("Error signing in user:", errorMessage);
+      }
       return false; // Sign-in failed
     } finally {
       setIsLoading(false);

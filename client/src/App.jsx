@@ -1,3 +1,4 @@
+// src/App.js
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -14,6 +15,7 @@ import Register from "./pages/Register";
 import Favourates from "./pages/Favourates";
 import Cart from "./pages/Cart";
 import CheckoutPage from "./pages/Checkout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -32,7 +34,10 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/register" element={<Register />} />
             <Route path="/favourates" element={<Favourates />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route
+              path="/checkout"
+              element={<ProtectedRoute element={CheckoutPage} />}
+            />
           </Routes>
         </Router>
         <footer>
