@@ -16,6 +16,10 @@ import Favourates from "./pages/Favourates";
 import Cart from "./pages/Cart";
 import CheckoutPage from "./pages/Checkout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Dashboard from "./pages/dashboard/Dashboard";
+import AdminLogin from "./pages/AdminLogin";
+import AdminRoute from "./components/AdminRoute";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -34,10 +38,17 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/register" element={<Register />} />
             <Route path="/favourates" element={<Favourates />} />
+
             <Route
               path="/checkout"
               element={<ProtectedRoute element={CheckoutPage} />}
             />
+            <Route
+              path="/dashboard"
+              element={<AdminRoute element={Dashboard} />}
+            />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
         <footer>

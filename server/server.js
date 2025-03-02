@@ -21,14 +21,11 @@ app.use(
     credentials: true,
     allowedHeaders: [
       "Origin",
-      "X-Requested-With",
       "Content-Type",
       "Authorization",
-      "Chache-Control",
-      "Expires",
-      "Last-Modified",
+      "Cache-Control",
       "Pragma",
-      "X-Custom-Header",
+      "Expires",
     ],
     methods: "GET, POST, PUT, DELETE",
   })
