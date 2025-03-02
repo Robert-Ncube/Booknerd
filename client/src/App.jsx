@@ -1,4 +1,4 @@
-// src/App.js
+// src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -20,6 +20,9 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import AdminLogin from "./pages/AdminLogin";
 import AdminRoute from "./components/AdminRoute";
 import NotFound from "./pages/NotFound";
+import Books from "./pages/Books";
+import BookInfo from "./pages/BookInfo";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
@@ -27,6 +30,7 @@ function App() {
       <main className="min-h-screen max-w-screen-2xl mx-auto px-4 md:px-10 py-6">
         <Toaster position="top-right" />
         <Router>
+          <ScrollToTop />
           <header>
             <Navbar />
           </header>
@@ -38,7 +42,8 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/register" element={<Register />} />
             <Route path="/favourates" element={<Favourates />} />
-
+            <Route path="/books" element={<Books />} />
+            <Route path="/books/:id" element={<BookInfo />} />
             <Route
               path="/checkout"
               element={<ProtectedRoute element={CheckoutPage} />}

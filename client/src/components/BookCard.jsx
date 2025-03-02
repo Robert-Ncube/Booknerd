@@ -1,15 +1,13 @@
 import React from "react";
 import { FiShoppingCart } from "react-icons/fi";
 import { getImageURL } from "../utils/getImgUrl";
-
-import { Link } from "react-router-dom";
-import Button from "./Button";
-
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/features/CartSlice";
 
 const BookCard = ({ book }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));

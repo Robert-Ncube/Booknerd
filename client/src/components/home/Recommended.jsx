@@ -13,6 +13,7 @@ import BookCard from "../BookCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllBooks } from "../../redux/features/bookSlice";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const Recommened = () => {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const Recommened = () => {
   }
 
   return (
-    <div className="py-16">
+    <div className="py-8">
       <h2 className="text-3xl font-semibold font-rubik mb-6">
         Recommended for you{" "}
       </h2>
