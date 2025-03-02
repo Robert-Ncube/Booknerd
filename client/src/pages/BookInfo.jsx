@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { getBookById } from "../redux/features/bookSlice";
 import { FiShoppingCart, FiHeart } from "react-icons/fi";
 import { getImageURL } from "../utils/getImgUrl";
+import { addToCart } from "../redux/features/CartSlice";
 
 const BookInfo = () => {
   const { id } = useParams();
@@ -16,7 +17,7 @@ const BookInfo = () => {
   }, [dispatch, id]);
 
   const handleAddToCart = () => {
-    // Implement add to cart functionality here
+    dispatch(addToCart(product));
   };
 
   const handleAddToFavourites = () => {
@@ -60,14 +61,14 @@ const BookInfo = () => {
             </div>
             <div className="flex gap-4">
               <button
-                onClick={handleAddToCart}
+                onClick={() => handleAddToCart(bookDetails)}
                 className="flex items-center gap-2 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-lg font-bold transition-all duration-200"
               >
                 <FiShoppingCart />
                 Add to Cart
               </button>
               <button
-                onClick={handleAddToFavourites}
+                onClick={() => handleAddToFavourites(bookDetails)}
                 className="flex items-center gap-2 px-6 py-2 bg-red-500 hover:bg-red-700 text-white rounded-lg font-bold transition-all duration-200"
               >
                 <FiHeart />

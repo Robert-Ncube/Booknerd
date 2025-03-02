@@ -53,27 +53,28 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const checkAuth = createAsyncThunk("/auth/check-auth", async (token) => {
-  const url = `${getBaseURL()}/api/auth/check-auth`;
-
-  try {
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Cache-Control":
-          "no-store, no-cache, must-revalidate, proxy-revalidate",
-      },
-    });
-
-    if (response.status !== 200 || !response.data.success) {
-      throw new Error(response.data.error || "Could not register user");
+export const checkAuth = createAsyncThunk(
+  "auth/checkAuth",
+  async (token, { rejectWithValue }) => {
+    const url = `${getBaseURL()}/api/auth/check-auth`;
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate",
+        },
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      if (error.response?.data?.message === "jwt expired") {
+        return rejectWithValue("Token expired");
+      }
+      return rejectWithValue(error.response?.data?.error || error.message);
     }
-
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data?.error || error.message);
   }
-});
+);
 
 export const logoutUser = createAsyncThunk("/auth/logout", async () => {
   const url = `${getBaseURL()}/api/auth/logout`;
@@ -157,6 +158,11 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;
+        state.token = null;
+        if (action.payload === "Token expired") {
+          toast.error("Session expired. Please log in again.");
+          sessionStorage.removeItem("token");
+        }
       })
       .addCase(logoutUser.pending, (state) => {
         state.isLoading = true;
@@ -165,6 +171,8 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;
+        state.token = null;
+        sessionStorage.removeItem("token");
         toast.success(action.payload.message);
       });
   },

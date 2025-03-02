@@ -37,6 +37,23 @@ export const getOrdersByEmail = createAsyncThunk(
   }
 );
 
+// Thunk to update order status
+export const updateOrderStatus = createAsyncThunk(
+  "orders/updateStatus",
+  async ({ orderId, status }, { rejectWithValue }) => {
+    try {
+      console.log("orderId:", orderId);
+      console.log("status:", status);
+
+      const url = `${getBaseURL()}/api/orders/update-status/${orderId}`;
+      const response = await axios.put(url, { status });
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const ordersSlice = createSlice({
   name: "orders",
   initialState,
@@ -75,6 +92,24 @@ const ordersSlice = createSlice({
       .addCase(getOrdersByEmail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.error || "Failed to fetch user orders";
+      })
+
+      // For updateOrderStatus
+      .addCase(updateOrderStatus.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateOrderStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        const updatedOrders = state.orders.map((order) =>
+          order._id === action.payload._id ? action.payload : order
+        );
+        state.orders = updatedOrders;
+        state.error = null;
+      })
+      .addCase(updateOrderStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.error || "Failed to update order status";
       });
   },
 });

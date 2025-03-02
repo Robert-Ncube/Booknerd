@@ -1,15 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdIncompleteCircle } from "react-icons/md";
-import RevenueChart from "../../components/RevenueChart";
+import RevenueChart from "../../components/admin/RevenueChart";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStats } from "../../redux/features/statsSlice";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { IoLogOutOutline } from "react-icons/io5";
+import { CgProfile } from "react-icons/cg";
+import { TiDocumentAdd } from "react-icons/ti";
+import { logoutUser } from "../../redux/features/authSlice";
+import toast from "react-hot-toast";
+import { IoMdClose } from "react-icons/io";
 
 const Dashboard = () => {
+  const [salesModal, setSalesModal] = useState(false);
   const { stats, isLoading, error } = useSelector((state) => state.stats);
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    try {
+      dispatch(logoutUser());
+      navigate("/");
+    } catch (error) {
+      toast.error("Failed to log out");
+    }
+  };
 
   useEffect(() => {
     try {
@@ -30,10 +46,42 @@ const Dashboard = () => {
     );
   }
 
+  const trendingPercentage = (stats?.trendingBooks / stats.totalBooks) * 100;
+
   return (
-    <>
+    <div className="flex flex-col gap-6 relative">
+      <section className="flex flex-col md:flex-row items-center justify-between gap-4 py-2 border-b">
+        <div className="">
+          <h2 className="text-3xl font-semibold font-rubik">Admin Dashboard</h2>
+        </div>
+        <div className="flex items-center justify-center gap-4">
+          <button
+            title="add new book"
+            className="bg-gray-300 px-4 py-2 text-sm rounded-md hover:bg-gray-400"
+          >
+            <TiDocumentAdd size={30} />
+          </button>
+          <button
+            title="profile"
+            className="bg-tprimary px-4 py-2 text-sm rounded-md hover:bg-gray-400"
+          >
+            <CgProfile size={30} />
+          </button>
+          <button
+            title="logout"
+            onClick={handleLogout}
+            className="bg-green-500 px-4 py-2 text-sm rounded-md hover:bg-green-600"
+          >
+            <IoLogOutOutline size={30} />
+          </button>
+        </div>
+      </section>
       <section className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
-        <div className="flex items-center p-8 bg-white shadow rounded-lg">
+        <button
+          title="All Books"
+          onClick={() => navigate("/books")}
+          className="flex items-center p-8 bg-white shadow shadow-slate-400 hover:shadow-black hover:bg-slate-200 rounded-lg"
+        >
           <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-purple-600 bg-purple-100 rounded-full mr-6">
             <svg
               aria-hidden="true"
@@ -56,8 +104,12 @@ const Dashboard = () => {
             </span>
             <span className="block text-gray-500">Products</span>
           </div>
-        </div>
-        <div className="flex items-center p-8 bg-white shadow rounded-lg">
+        </button>
+        <button
+          title="My Sales"
+          onClick={() => setSalesModal(!salesModal)}
+          className="flex items-center p-8 bg-white shadow  shadow-slate-400 hover:shadow-black hover:bg-slate-200 rounded-lg"
+        >
           <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-green-600 bg-green-100 rounded-full mr-6">
             <svg
               aria-hidden="true"
@@ -80,8 +132,8 @@ const Dashboard = () => {
             </span>
             <span className="block text-gray-500">Total Sales</span>
           </div>
-        </div>
-        <div className="flex items-center p-8 bg-white shadow rounded-lg">
+        </button>
+        <button className="flex items-center p-8 bg-white shadow  shadow-slate-400 hover:shadow-black hover:bg-slate-200 rounded-lg">
           <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
             <svg
               aria-hidden="true"
@@ -103,14 +155,18 @@ const Dashboard = () => {
               {stats?.trendingBooks}
             </span>
             <span className="inline-block text-xl text-gray-500 font-semibold">
-              (13%)
+              ({trendingPercentage}%)
             </span>
             <span className="block text-gray-500">
               Trending Books in This Month
             </span>
           </div>
-        </div>
-        <div className="flex items-center p-8 bg-white shadow rounded-lg">
+        </button>
+        <button
+          title="orders"
+          onClick={() => navigate("/dashboard/orders")}
+          className="flex items-center p-8 bg-white shadow shadow-slate-400 hover:shadow-black hover:bg-slate-200 rounded-lg"
+        >
           <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-blue-600 bg-blue-100 rounded-full mr-6">
             <MdIncompleteCircle className="size-6" />
           </div>
@@ -120,7 +176,7 @@ const Dashboard = () => {
             </span>
             <span className="block text-gray-500">Total Orders</span>
           </div>
-        </div>
+        </button>
       </section>
       <section className="grid md:grid-cols-2 xl:grid-cols-4 xl:grid-rows-3 xl:grid-flow-col gap-6">
         <div className="flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg">
@@ -305,7 +361,25 @@ const Dashboard = () => {
           </div>
         </div>
       </section>
-    </>
+
+      {/*Sales Modal */}
+      {salesModal && (
+        <div className="absolute z-50 inset-0 h-96 mx-1 md:mx-6 lg:mx-28 top-12 bg-slate-200 border-2 border-black rounded-lg overflow-y-auto">
+          <div className="flex items-center justify-between px-4  border-b-4 border-white  my-2 py-1 ">
+            <h2 className="text-xl font-bold font-rubik capitalizetext-center md:text-start mx-6">
+              Your Sales
+            </h2>
+            <button
+              type="button"
+              className="text-sm font-medium text-gray-600 hover:text-gray-800"
+              onClick={() => setSalesModal(false)}
+            >
+              <IoMdClose size={28} />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

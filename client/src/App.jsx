@@ -17,12 +17,13 @@ import Cart from "./pages/Cart";
 import CheckoutPage from "./pages/Checkout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/dashboard/Dashboard";
-import AdminLogin from "./pages/AdminLogin";
-import AdminRoute from "./components/AdminRoute";
+import AdminLogin from "./pages/dashboard/AdminLogin";
+import AdminRoute from "./components/admin/AdminRoute";
 import NotFound from "./pages/NotFound";
 import Books from "./pages/Books";
 import BookInfo from "./pages/BookInfo";
 import ScrollToTop from "./components/ScrollToTop";
+import AdminOrders from "./pages/dashboard/AdminOrders";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
               element={<AdminRoute element={Dashboard} />}
             />
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/dashboard/orders" element={<AdminOrders />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>

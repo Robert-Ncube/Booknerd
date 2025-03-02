@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { loginUser } from "../redux/features/authSlice";
+import { loginUser } from "../../redux/features/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 

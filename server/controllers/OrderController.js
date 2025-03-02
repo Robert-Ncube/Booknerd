@@ -108,7 +108,11 @@ export const getOrdersByEmail = async (req, res) => {
 
 export const updatedOrderStatus = async (req, res) => {
   try {
-    const { orderId, status } = req.body;
+    const { status } = req.body;
+    const { id: orderId } = req.params;
+
+    console.log("Request Params:", req.params);
+    console.log("Request Body:", req.body);
 
     if (!orderId || !status) {
       return res.status(400).json({
