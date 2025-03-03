@@ -20,8 +20,8 @@ const BookCard = ({ book }) => {
           <Link to={`/books/${book._id}`}>
             <img
               src={`${getImageURL(book?.coverImage)}`}
-              alt=""
-              className="w-full bg-cover p-2 rounded-md cursor-pointer hover:scale-105 transition-all duration-200"
+              alt="book photo"
+              className="w-full h-full bg-cover p-2 rounded-lg cursor-pointer hover:scale-95 transition-all duration-200"
             />
           </Link>
         </div>
@@ -38,10 +38,12 @@ const BookCard = ({ book }) => {
               : book?.description}
           </p>
           <p className="font-medium mb-5 text-green-600">
-            ${book?.newPrice}{" "}
-            <span className="line-through font-normal ml-2 text-red-300">
-              $ {book?.oldPrice}
-            </span>
+            ${book?.newPrice.toFixed(2)}{" "}
+            {book?.oldPrice && (
+              <span className="line-through font-normal ml-2 text-red-300">
+                $ {book?.oldPrice.toFixed(2)}
+              </span>
+            )}
           </p>
           <button
             onClick={() => handleAddToCart(book)}

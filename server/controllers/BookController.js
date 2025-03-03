@@ -3,6 +3,7 @@ import Book from "../models/BookModel.js";
 export const createBook = async (req, res) => {
   try {
     const book = req.body;
+    //console.log("Book:", book);
 
     // Check required fields (use ||)
     if (
@@ -11,7 +12,6 @@ export const createBook = async (req, res) => {
       !book.category ||
       !book.coverImage ||
       !book.stock ||
-      !book.oldPrice ||
       !book.newPrice
     ) {
       return res
@@ -20,10 +20,7 @@ export const createBook = async (req, res) => {
     }
 
     // Validate prices if provided
-    if (
-      (book.oldPrice !== undefined && book.oldPrice <= 0) ||
-      (book.newPrice !== undefined && book.newPrice <= 0)
-    ) {
+    if (book.newPrice !== undefined && book.newPrice <= 0) {
       return res
         .status(400)
         .json({ success: false, error: "Invalid price range!" });

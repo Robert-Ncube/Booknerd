@@ -1,15 +1,17 @@
 // src/pages/BookInfo.jsx
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getBookById } from "../redux/features/bookSlice";
 import { FiShoppingCart, FiHeart } from "react-icons/fi";
 import { getImageURL } from "../utils/getImgUrl";
 import { addToCart } from "../redux/features/CartSlice";
+import { IoClose } from "react-icons/io5";
 
 const BookInfo = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { bookDetails, isLoading, error } = useSelector((state) => state.books);
 
   useEffect(() => {
@@ -39,9 +41,16 @@ const BookInfo = () => {
             />
           </div>
           <div className="flex-grow">
-            <h1 className="text-4xl font-semibold text-gray-800 mb-4">
-              {bookDetails.title}
-            </h1>
+            <div className="flex items-center justify-between">
+              <h1 className="text-4xl font-semibold text-gray-800 mb-4">
+                {bookDetails.title}
+              </h1>
+              <IoClose
+                size={28}
+                onClick={() => navigate("/books")}
+                className="cursor-pointer hover:text-gray-600"
+              />
+            </div>
             <p className="text-lg text-gray-600 mb-4">
               {bookDetails.description}
             </p>
@@ -55,9 +64,11 @@ const BookInfo = () => {
               <span className="text-3xl text-green-600 font-semibold">
                 ${bookDetails.newPrice}
               </span>
-              <span className="text-xl text-red-300 line-through ml-3">
-                ${bookDetails.oldPrice}
-              </span>
+              {bookDetails.oldPrice && (
+                <span className="text-xl text-red-300 line-through ml-3">
+                  ${bookDetails.oldPrice}
+                </span>
+              )}
             </div>
             <div className="flex gap-4">
               <button

@@ -23,7 +23,6 @@ const BookSchema = new mongoose.Schema({
   },
   oldPrice: {
     type: Number,
-    required: true,
   },
   newPrice: {
     type: Number,
@@ -33,7 +32,7 @@ const BookSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  favourite: {
+  favourate: {
     type: Boolean,
     default: false,
   },

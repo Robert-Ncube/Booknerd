@@ -11,9 +11,11 @@ import { TiDocumentAdd } from "react-icons/ti";
 import { logoutUser } from "../../redux/features/authSlice";
 import toast from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
+import CreateBookForm from "./CreateBookForm";
 
 const Dashboard = () => {
   const [salesModal, setSalesModal] = useState(false);
+  const [bookForm, setBookForm] = useState(false);
   const { stats, isLoading, error } = useSelector((state) => state.stats);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -57,6 +59,7 @@ const Dashboard = () => {
         <div className="flex items-center justify-center gap-4">
           <button
             title="add new book"
+            onClick={() => setBookForm(!bookForm)}
             className="bg-gray-300 px-4 py-2 text-sm rounded-md hover:bg-gray-400"
           >
             <TiDocumentAdd size={30} />
@@ -155,7 +158,7 @@ const Dashboard = () => {
               {stats?.trendingBooks}
             </span>
             <span className="inline-block text-xl text-gray-500 font-semibold">
-              ({trendingPercentage}%)
+              ({trendingPercentage.toFixed(1)}%)
             </span>
             <span className="block text-gray-500">
               Trending Books in This Month
@@ -376,6 +379,15 @@ const Dashboard = () => {
             >
               <IoMdClose size={28} />
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Book Form Modal */}
+      {bookForm && (
+        <div className="fixed z-50 inset-0 bg-gray-900 bg-opacity-50 flex flex-col items-center justify-center">
+          <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 p-6 relative">
+            <CreateBookForm closeModal={() => setBookForm(!bookForm)} />
           </div>
         </div>
       )}

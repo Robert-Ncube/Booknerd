@@ -29,6 +29,23 @@ const Orders = () => {
     setSelectedOrder(null);
   };
 
+  const statusColor = (status) => {
+    switch (status) {
+      case "pending":
+        return "text-gray-200";
+      case "confirmed":
+        return "text-green-600";
+      case "shipping":
+        return "text-yellow-400";
+      case "delivered":
+        return "text-blue-600";
+      case "cancelled":
+        return "text-red-600";
+      default:
+        return "text-gray-200";
+    }
+  };
+
   if (loading)
     return (
       <div className="flex flex-col items-center justify-center w-full h-full min-h-screen gap-4">
@@ -44,12 +61,15 @@ const Orders = () => {
         <h2 className="font-rubik font-semibold text-red-600">
           Error getting orders data...
         </h2>
+        <p className="font-rubik text-sm text-gray-600">{error}</p>
       </div>
     );
 
   return (
     <div className="container mx-auto p-6 min-h-screen">
-      <h2 className="text-2xl font-semibold mb-4">Your Orders</h2>
+      <h2 className="text-2xl font-bold lg:text-5xl font-rubik border-b py-2 mb-4">
+        Your Orders
+      </h2>
       {orders.length === 0 ? (
         <div>No orders found!</div>
       ) : (
@@ -78,7 +98,11 @@ const Orders = () => {
                   </p>
                   <p className="text-gray-600">
                     Order Status:
-                    <span className="font-bold border border-slate-400 p-1 mx-1 text-blue-600 capitalize">
+                    <span
+                      className={`font-bold border border-slate-400 p-1 mx-1 ${statusColor(
+                        order.status
+                      )} capitalize`}
+                    >
                       {order.status}
                     </span>
                   </p>
@@ -111,7 +135,7 @@ const Orders = () => {
               <IoMdClose size={24} />
             </button>
 
-            <OrderDetails order={selectedOrder} />
+            <OrderDetails onClose={handleCloseModal} order={selectedOrder} />
           </div>
         </div>
       )}
@@ -119,21 +143,23 @@ const Orders = () => {
   );
 };
 
-const OrderDetails = ({ order }) => {
+const OrderDetails = ({ order, onClose }) => {
   const dispatch = useDispatch();
 
   const statusColor = (status) => {
     switch (status) {
       case "pending":
-        return "bg-gray-200";
+        return "text-gray-200";
       case "confirmed":
-        return "bg-green-600";
+        return "text-green-600";
       case "shipping":
-        return "bg-yellow-400";
+        return "text-yellow-400";
       case "delivered":
-        return "bg-blue-600";
+        return "text-blue-600";
+      case "cancelled":
+        return "text-red-600";
       default:
-        return "bg-gray-200";
+        return "text-gray-200";
     }
   };
 
@@ -147,6 +173,7 @@ const OrderDetails = ({ order }) => {
       if (result.payload) {
         toast.success("Order status updated successfully!");
         dispatch(getAllOrders());
+        onClose();
       }
     } catch (error) {
       console.error(error.message);
@@ -154,7 +181,7 @@ const OrderDetails = ({ order }) => {
   };
 
   return (
-    <div className="overflow-y-auto">
+    <div className="overflow-y-auto h-80 md:h-92">
       <h2 className="text-xl font-bold mb-4 border-b-2">Order Details</h2>
       <p className="mb-2 font-semibold border border-slate-400 p-2 my-2">
         <strong>Order ID:</strong> #{order._id}
@@ -173,11 +200,11 @@ const OrderDetails = ({ order }) => {
           <strong>Total Price:</strong> ${order.totalPrice}
         </p>
         <p className="mb-4">
-          <strong>Status:</strong>
+          <strong>Status:</strong>{" "}
           <select
             value={order.status}
             onChange={handleStatusChange}
-            className={`w-full text-sm font-medium border border-slate-800 py-1 px-2 rounded-lg text-gray-600 hover:bg-gray-200 ${statusColor(
+            className={` text-sm font-medium border border-slate-800 py-1 px-2 rounded-lg hover:bg-gray-200 ${statusColor(
               order.status
             )}`}
           >

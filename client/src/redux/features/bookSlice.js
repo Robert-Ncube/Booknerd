@@ -39,6 +39,18 @@ export const getBookById = createAsyncThunk("/books/:id", async (id) => {
   }
 });
 
+export const createBook = createAsyncThunk("/books/create", async (book) => {
+  const url = `${getBaseURL()}/api/books/create`;
+  try {
+    const response = await axios.post(url, book);
+    return response?.data;
+  } catch (error) {
+    toast.error("Failed to create book");
+    console.error("Error creating book: ", error);
+    throw error;
+  }
+});
+
 const BookSlice = createSlice({
   name: "books",
   initialState,
@@ -75,6 +87,21 @@ const BookSlice = createSlice({
       .addCase(getBookById.rejected, (state, action) => {
         state.isLoading = false;
         console.error("Error fetching book details: ", action.error);
+      })
+
+      // For createBook
+      .addCase(createBook.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createBook.fulfilled, (state, action) => {
+        state.isLoading = false;
+        toast.success("Book created successfully!");
+        console.log("book created:", action.payload);
+      })
+      .addCase(createBook.rejected, (state, action) => {
+        state.isLoading = false;
+        toast.error("Failed to create book");
+        console.error("Error creating book: ", action.error);
       });
   },
 });
