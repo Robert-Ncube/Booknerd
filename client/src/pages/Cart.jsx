@@ -23,6 +23,10 @@ const CartPage = () => {
     dispatch(clearCart());
   };
 
+  const totalPerBook = (qnty, basePrice) => {
+    return (qnty * basePrice).toFixed(2);
+  };
+
   return (
     <>
       <div className="flex mt-12 h-full flex-col overflow-hidden bg-white shadow-xl">
@@ -65,13 +69,17 @@ const CartPage = () => {
                             <div className="flex flex-col gap-2 border py-1 px-2 rounded-md">
                               <p className="">
                                 <span className="font-thin">Per Book:</span> $
-                                {product?.newPrice}
+                                {product?.newPrice.toFixed(2)}
                               </p>
                               <p>
                                 <span className="text-gray-500 font-light">
                                   Total per Book:
                                 </span>{" "}
-                                ${product?.quantity * product?.newPrice}
+                                $
+                                {totalPerBook(
+                                  product?.quantity,
+                                  product?.newPrice
+                                )}
                               </p>
                             </div>
                           </div>

@@ -4,6 +4,7 @@ import BookSlice from "./features/bookSlice";
 import OrdersSlice from "./features/OrdersSlice";
 import AuthSlice from "./features/authSlice";
 import StatsSlice from "./features/statsSlice";
+import FavouratesSlice from "./features/favouratesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     orders: OrdersSlice,
     auth: AuthSlice,
     stats: StatsSlice,
+    favourates: FavouratesSlice,
   },
 });

@@ -1,4 +1,3 @@
-// src/pages/BookInfo.jsx
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,23 +6,52 @@ import { FiShoppingCart, FiHeart } from "react-icons/fi";
 import { getImageURL } from "../utils/getImgUrl";
 import { addToCart } from "../redux/features/CartSlice";
 import { IoClose } from "react-icons/io5";
+import { IoMdHeart } from "react-icons/io";
+import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
+import {
+  fetchFavouratesByUserId,
+  addToFavourates,
+  removeFromFavourates,
+} from "../redux/features/favouratesSlice";
 
 const BookInfo = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { bookDetails, isLoading, error } = useSelector((state) => state.books);
+  const { favourates } = useSelector((state) => state.favourates);
+  const { currentUser } = useAuth();
+  //console.log("user:", currentUser);
 
   useEffect(() => {
-    dispatch(getBookById(id));
-  }, [dispatch, id]);
+    if (currentUser) {
+      dispatch(getBookById(id));
+      dispatch(fetchFavouratesByUserId(currentUser?.uid));
+    }
+  }, [dispatch, id, currentUser]);
+
+  // Check if book is in favourates
+  const isFavourate = favourates.find((favourate) => favourate.bookId === id);
 
   const handleAddToCart = () => {
-    dispatch(addToCart(product));
+    dispatch(addToCart(bookDetails));
   };
 
-  const handleAddToFavourites = () => {
-    // Implement add to favourites functionality here
+  const handleAddToFavourates = () => {
+    if (currentUser) {
+      dispatch(addToFavourates({ bookId: id, userId: currentUser.uid }));
+    } else {
+      toast.error("Please log in to add to favourates.");
+    }
+  };
+
+  const handleRemoveFromFavourates = () => {
+    if (currentUser) {
+      dispatch(removeFromFavourates({ bookId: id, userId: currentUser.uid }));
+    } else {
+      toast.error("Please log in to remove from favourates.");
+    }
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -62,11 +90,11 @@ const BookInfo = () => {
             </p>
             <div className="mb-6">
               <span className="text-3xl text-green-600 font-semibold">
-                ${bookDetails.newPrice}
+                ${bookDetails.newPrice.toFixed(2)}
               </span>
               {bookDetails.oldPrice && (
                 <span className="text-xl text-red-300 line-through ml-3">
-                  ${bookDetails.oldPrice}
+                  ${bookDetails.oldPrice.toFixed(2)}
                 </span>
               )}
             </div>
@@ -78,13 +106,23 @@ const BookInfo = () => {
                 <FiShoppingCart />
                 Add to Cart
               </button>
-              <button
-                onClick={() => handleAddToFavourites(bookDetails)}
-                className="flex items-center gap-2 px-6 py-2 bg-red-500 hover:bg-red-700 text-white rounded-lg font-bold transition-all duration-200"
-              >
-                <FiHeart />
-                Add to Favourites
-              </button>
+              {isFavourate ? (
+                <button
+                  onClick={() => handleRemoveFromFavourates()}
+                  className="flex items-center gap-2 px-6 py-2 bg-gray-400 text-white rounded-lg font-bold transition-all duration-200"
+                >
+                  <FiHeart />
+                  Remove from Favourates
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleAddToFavourates()}
+                  className="flex items-center gap-2 px-6 py-2 bg-red-500 hover:bg-red-700 text-white rounded-lg font-bold transition-all duration-200"
+                >
+                  <IoMdHeart />
+                  Add to Favourates
+                </button>
+              )}
             </div>
           </div>
         </div>

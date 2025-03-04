@@ -1,11 +1,14 @@
 import React from "react";
-import { FiShoppingCart } from "react-icons/fi";
+import { FiHeart, FiShoppingCart } from "react-icons/fi";
 import { getImageURL } from "../utils/getImgUrl";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/features/CartSlice";
+import { removeFromFavourates } from "../redux/features/favouratesSlice";
+import { useAuth } from "../context/AuthContext";
 
-const BookCard = ({ book }) => {
+const BookCard = ({ book, show }) => {
+  const { currentUser } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -13,8 +16,16 @@ const BookCard = ({ book }) => {
     dispatch(addToCart(product));
   };
 
+  const handleRemoveFromFavourates = (id) => {
+    if (currentUser) {
+      dispatch(removeFromFavourates({ bookId: id, userId: currentUser.uid }));
+    } else {
+      toast.error("Please log in to remove from favourates.");
+    }
+  };
+
   return (
-    <div className=" rounded-lg transition-shadow duration-300 bg-slate-200 shadow-sm shadow-slate-800">
+    <div className=" rounded-lg w-full transition-shadow duration-300 bg-slate-200 shadow-sm shadow-slate-800">
       <div className="flex flex-col sm:flex-row sm:items-center sm:h-72  sm:justify-center gap-4">
         <div className="sm:h-72 sm:flex-shrink-0 rounded-md">
           <Link to={`/books/${book._id}`}>
@@ -45,13 +56,25 @@ const BookCard = ({ book }) => {
               </span>
             )}
           </p>
-          <button
-            onClick={() => handleAddToCart(book)}
-            className="bg-tprimary px-6 py-2 rounded-lg space-x-1 flex items-center gap-1 font-bold"
-          >
-            <FiShoppingCart className="" />
-            Add to Cart
-          </button>
+
+          <div className="flex gap-4">
+            <button
+              onClick={() => handleAddToCart(book)}
+              className="bg-tprimary px-2 lg:px-6 text-sm lg:text-lg py-2 rounded-lg space-x-1 flex items-center gap-1 font-bold"
+            >
+              <FiShoppingCart className="" />
+              Add to Cart
+            </button>
+            {show && (
+              <button
+                onClick={() => handleRemoveFromFavourates(book._id)}
+                className="flex items-center gap-2 px-6 py-2 bg-gray-400 text-white rounded-lg font-bold transition-all duration-200"
+              >
+                <FiHeart />
+                Remove from Favourates
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

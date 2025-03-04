@@ -12,11 +12,13 @@ import { logoutUser } from "../../redux/features/authSlice";
 import toast from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
 import CreateBookForm from "./CreateBookForm";
+import { getAllOrders } from "../../redux/features/OrdersSlice";
 
 const Dashboard = () => {
   const [salesModal, setSalesModal] = useState(false);
   const [bookForm, setBookForm] = useState(false);
   const { stats, isLoading, error } = useSelector((state) => state.stats);
+  const { orders } = useSelector((state) => state.orders);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,6 +30,10 @@ const Dashboard = () => {
       toast.error("Failed to log out");
     }
   };
+
+  useEffect(() => {
+    dispatch(getAllOrders());
+  }, [dispatch]);
 
   useEffect(() => {
     try {
@@ -49,6 +55,7 @@ const Dashboard = () => {
   }
 
   const trendingPercentage = (stats?.trendingBooks / stats.totalBooks) * 100;
+  const pendingOrders = orders.filter((order) => order.status === "pending");
 
   return (
     <div className="flex flex-col gap-6 relative">
@@ -215,7 +222,9 @@ const Dashboard = () => {
             </svg>
           </div>
           <div>
-            <span className="block text-2xl font-bold">02</span>
+            <span className="block text-2xl font-bold">
+              {pendingOrders?.length}
+            </span>
             <span className="block text-gray-500">Orders left</span>
           </div>
         </div>
