@@ -17,6 +17,23 @@ export const getStats = async (req, res) => {
       },
     ]);
 
+    // 3. Last month sales (sum of all totalPrice from orders in the last month)
+    const lastMonth = new Date();
+    lastMonth.setMonth(lastMonth.getMonth() - 1);
+    const lastMonthSales = await Order.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: lastMonth },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalSales: { $sum: "$totalPrice" },
+        },
+      },
+    ]);
+
     // 4. Trending books statistics:
     const trendingBooksCount = await Book.aggregate([
       { $match: { trending: true } }, // Match only trending books
@@ -48,6 +65,7 @@ export const getStats = async (req, res) => {
     res.status(200).json({
       totalOrders,
       totalSales: totalSales[0]?.totalSales || 0,
+      lastMonthSales: lastMonthSales[0]?.totalSales || 0,
       trendingBooks,
       totalBooks,
       monthlySales,

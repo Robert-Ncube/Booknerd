@@ -55,20 +55,19 @@ export const loginUser = createAsyncThunk(
 
 export const checkAuth = createAsyncThunk(
   "auth/checkAuth",
-  async (token, { rejectWithValue }) => {
+  async (token, { dispatch, rejectWithValue }) => {
     const url = `${getBaseURL()}/api/auth/check-auth`;
     try {
       const response = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Cache-Control":
-            "no-store, no-cache, must-revalidate, proxy-revalidate",
-        },
+        headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
       return response.data;
     } catch (error) {
-      if (error.response?.data?.message === "jwt expired") {
+      // Handle token expiration specifically
+      if (error.response?.data?.isTokenExpired) {
+        dispatch(logoutUser());
+        sessionStorage.removeItem("token");
         return rejectWithValue("Token expired");
       }
       return rejectWithValue(error.response?.data?.error || error.message);
@@ -76,27 +75,17 @@ export const checkAuth = createAsyncThunk(
   }
 );
 
-export const logoutUser = createAsyncThunk("/auth/logout", async () => {
-  const url = `${getBaseURL()}/api/auth/logout`;
-
-  try {
-    const response = await axios.post(
-      url,
-      {},
-      {
-        withCredentials: true,
-      }
-    );
-
-    if (response.status !== 200 || !response.data.success) {
-      throw new Error(response.data.error || "Could not logout user");
+export const logoutUser = createAsyncThunk(
+  "/auth/logout",
+  async (_, { dispatch }) => {
+    const url = `${getBaseURL()}/api/auth/logout`;
+    try {
+      await axios.post(url, {}, { withCredentials: true });
+    } finally {
+      sessionStorage.removeItem("token");
     }
-
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data?.error || error.message);
   }
-});
+);
 
 export const authSlice = createSlice({
   name: "auth",
@@ -159,9 +148,9 @@ export const authSlice = createSlice({
         state.isAuthenticated = false;
         state.user = null;
         state.token = null;
+        sessionStorage.removeItem("token");
         if (action.payload === "Token expired") {
           toast.error("Session expired. Please log in again.");
-          sessionStorage.removeItem("token");
         }
       })
       .addCase(logoutUser.pending, (state) => {

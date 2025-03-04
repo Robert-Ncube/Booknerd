@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { createBook, fetchAllBooks } from "../../redux/features/bookSlice";
 import { useDispatch } from "react-redux";
+import { IoClose } from "react-icons/io5";
 
 const CreateBookForm = ({ closeModal }) => {
   const [formData, setFormData] = useState({
@@ -52,9 +53,17 @@ const CreateBookForm = ({ closeModal }) => {
 
   return (
     <div className="max-w-lg  h-80 md:h-92 overflow-y-auto mx-auto p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-bold font-rubik py-2 border-b-2 mb-4">
-        Add a New Book
-      </h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold font-rubik py-2 border-b-2 mb-4">
+          Add a New Book
+        </h2>
+        <button
+          onClick={closeModal}
+          className="text-gray-700 hover:text-gray-900"
+        >
+          <IoClose size={24} />
+        </button>
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="title">

@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
 import CreateBookForm from "./CreateBookForm";
 import { getAllOrders } from "../../redux/features/OrdersSlice";
+import SalesModal from "../../components/admin/SalesModal";
 
 const Dashboard = () => {
   const [salesModal, setSalesModal] = useState(false);
@@ -43,7 +44,7 @@ const Dashboard = () => {
     }
   }, []);
 
-  // console.log(stats)
+  //console.log("order:", orders);
 
   if (isLoading) {
     return (
@@ -376,20 +377,12 @@ const Dashboard = () => {
 
       {/*Sales Modal */}
       {salesModal && (
-        <div className="absolute z-50 inset-0 h-96 mx-1 md:mx-6 lg:mx-28 top-12 bg-slate-200 border-2 border-black rounded-lg overflow-y-auto">
-          <div className="flex items-center justify-between px-4  border-b-4 border-white  my-2 py-1 ">
-            <h2 className="text-xl font-bold font-rubik capitalizetext-center md:text-start mx-6">
-              Your Sales
-            </h2>
-            <button
-              type="button"
-              className="text-sm font-medium text-gray-600 hover:text-gray-800"
-              onClick={() => setSalesModal(false)}
-            >
-              <IoMdClose size={28} />
-            </button>
-          </div>
-        </div>
+        <SalesModal
+          stats={stats}
+          isLoading={isLoading}
+          error={error}
+          onClose={() => setSalesModal(!salesModal)}
+        />
       )}
 
       {/* Book Form Modal */}

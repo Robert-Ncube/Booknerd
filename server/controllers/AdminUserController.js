@@ -124,26 +124,31 @@ export const deleteProfile = async (req, res) => {};
 
 export const authMiddleware = async (req, res, next) => {
   try {
-    // Check if the JWT token is present in the request
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
-    // Verify the JWT token
     if (!token) {
       return res.status(401).json({ success: false, error: "Unauthorized!" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // Verify token and handle expiration
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        if (err.name === "TokenExpiredError") {
+          return res.status(401).json({
+            success: false,
+            error: "Token expired!",
+            isTokenExpired: true, // Add custom flag for frontend
+          });
+        }
+        return res
+          .status(401)
+          .json({ success: false, error: "Invalid token!" });
+      }
 
-    // Check if the token is valid
-    if (!decoded) {
-      return res.status(401).json({ success: false, error: "Unauthorized!" });
-    }
-
-    // Attach the user to the request object
-    req.user = decoded;
-
-    next();
+      req.user = decoded;
+      next();
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ success: false, error: "Server error!" });
