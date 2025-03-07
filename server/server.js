@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://booknerd-client.vercel.app"],
+    origin: ["http://localhost:5173", "https://booknerdstore.vercel.app"],
     credentials: true,
     allowedHeaders: [
       "Origin",
