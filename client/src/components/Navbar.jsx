@@ -24,13 +24,9 @@ const Navbar = () => {
 
   const { currentUser, signOutUser } = useAuth();
   console.log("user:", currentUser);
+  console.log("userPhoto:", currentUser?.photoURL);
 
   const dropdownlinks = [
-    {
-      label: "Profile",
-      path: "/profile",
-      icon: <FaRegUserCircle size={20} />,
-    },
     {
       label: "Dashboard",
       path: "/dashboard",
@@ -92,19 +88,28 @@ const Navbar = () => {
             )}
           </div>
         </div>
-        <div className="flex flex-row w-full items-center justify-end gap-2 md:gap-5">
+        <div className="flex flex-row w-full items-center justify-end gap-2">
           {currentUser ? (
             <div className="relative">
-              <button
-                className="bg-none p-0"
-                onClick={() => setOpenDropdown(!openDropdown)}
-              >
-                <FaRegUserCircle
-                  size={20}
-                  title={currentUser?.displayName || currentUser?.email}
-                  className="text-primary p-1 rounded-full h-full w-full shadow-sm shadow-black hover:bg-slate-200"
-                />
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  className="bg-none p-0"
+                  onClick={() => setOpenDropdown(!openDropdown)}
+                >
+                  {
+                    <FaRegUserCircle
+                      size={20}
+                      title={currentUser?.displayName || currentUser?.email}
+                      className="text-primary p-1 rounded-full h-full w-full shadow-sm shadow-black hover:bg-slate-200"
+                    />
+                  }
+                </button>
+                <div className="hidden md:flex flex-col items-center">
+                  <p className="text-sm font-bold font-rubik text-gray-600">
+                    {currentUser?.displayName}
+                  </p>
+                </div>
+              </div>
 
               {openDropdown && (
                 <div className="absolute -right-6 md:right-0 p-2 mt-2 w-48 bg-white rounded-md shadow-md shadow-gray-800 z-20">
@@ -145,12 +150,20 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            <Link to={"/login"}>
-              <MdOutlinePerson size={20} title="login" />
+            <Link
+              to={"/login"}
+              title="login"
+              className="p-2 rounded-full bg-slate-200 hover:bg-slate-500"
+            >
+              <MdOutlinePerson size={20} />
             </Link>
           )}
-          <Link to={"/favourates"}>
-            <FaRegHeart size={18} title="favourates" />
+          <Link
+            to={"/favourates"}
+            title="favourates"
+            className="p-2 rounded-full hover:bg-slate-500"
+          >
+            <FaRegHeart size={18} />
           </Link>
           <Link to={"/cart"}>
             <Button

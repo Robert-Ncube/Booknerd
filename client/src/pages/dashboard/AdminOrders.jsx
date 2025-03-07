@@ -149,7 +149,7 @@ const OrderDetails = ({ order, onClose }) => {
   const statusColor = (status) => {
     switch (status) {
       case "pending":
-        return "text-gray-200";
+        return "text-gray-600";
       case "confirmed":
         return "text-green-600";
       case "shipping":

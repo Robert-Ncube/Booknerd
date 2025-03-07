@@ -41,12 +41,39 @@ export const getBookById = createAsyncThunk("/books/:id", async (id) => {
 
 export const createBook = createAsyncThunk("/books/create", async (book) => {
   const url = `${getBaseURL()}/api/books/create`;
+
   try {
     const response = await axios.post(url, book);
     return response?.data;
   } catch (error) {
     toast.error("Failed to create book");
     console.error("Error creating book: ", error);
+    throw error;
+  }
+});
+
+export const updateBook = createAsyncThunk(
+  "books/update",
+  async ({ id, ...cleanData }) => {
+    try {
+      const response = await axios.put(
+        `${getBaseURL()}/api/books/${id}`, // Remove "/update" from endpoint
+        cleanData // Send data directly without wrapping
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Update error:", error.response?.data);
+      throw error;
+    }
+  }
+);
+
+export const deleteBook = createAsyncThunk("books/delete", async (bookId) => {
+  try {
+    await axios.delete(`${getBaseURL()}/api/books/delete/${bookId}`);
+    return bookId;
+  } catch (error) {
+    console.error("Delete error:", error.response?.data);
     throw error;
   }
 });
@@ -102,6 +129,34 @@ const BookSlice = createSlice({
         state.isLoading = false;
         toast.error("Failed to create book");
         console.error("Error creating book: ", action.error);
+      })
+      // For updateBook
+      .addCase(updateBook.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateBook.fulfilled, (state, action) => {
+        state.isLoading = false;
+        toast.success("Book updated successfully!");
+        console.log("book updated:", action.payload);
+      })
+      .addCase(updateBook.rejected, (state, action) => {
+        state.isLoading = false;
+        toast.error("Failed to update book");
+        console.error("Error updating book: ", action.error);
+      })
+      // For deleteBook
+      .addCase(deleteBook.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteBook.fulfilled, (state, action) => {
+        state.isLoading = false;
+        toast.success("Book deleted successfully!");
+        console.log("book deleted:", action.payload);
+      })
+      .addCase(deleteBook.rejected, (state, action) => {
+        state.isLoading = false;
+        toast.error("Failed to delete book");
+        console.error("Error deleting book: ", action.error);
       });
   },
 });

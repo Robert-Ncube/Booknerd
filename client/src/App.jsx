@@ -24,6 +24,8 @@ import Books from "./pages/Books";
 import BookInfo from "./pages/BookInfo";
 import ScrollToTop from "./components/ScrollToTop";
 import AdminOrders from "./pages/dashboard/AdminOrders";
+import ManageBooks from "./components/ManageBooks";
+import BookList from "./components/booklist";
 
 function App() {
   return (
@@ -55,6 +57,7 @@ function App() {
             />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/dashboard/orders" element={<AdminOrders />} />
+            <Route path="/dashboard/manage-books" element={<BookList />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>

@@ -6,17 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchStats } from "../../redux/features/statsSlice";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoLogOutOutline } from "react-icons/io5";
-import { CgProfile } from "react-icons/cg";
+import { AiOutlineProduct } from "react-icons/ai";
 import { TiDocumentAdd } from "react-icons/ti";
 import { logoutUser } from "../../redux/features/authSlice";
 import toast from "react-hot-toast";
-import { IoMdClose } from "react-icons/io";
+import { ImBooks } from "react-icons/im";
 import CreateBookForm from "./CreateBookForm";
 import { getAllOrders } from "../../redux/features/OrdersSlice";
-import SalesModal from "../../components/admin/SalesModal";
 
 const Dashboard = () => {
-  const [salesModal, setSalesModal] = useState(false);
   const [bookForm, setBookForm] = useState(false);
   const { stats, isLoading, error } = useSelector((state) => state.stats);
   const { orders } = useSelector((state) => state.orders);
@@ -68,29 +66,39 @@ const Dashboard = () => {
           <button
             title="add new book"
             onClick={() => setBookForm(!bookForm)}
-            className="bg-gray-300 px-4 py-2 text-sm rounded-md hover:bg-gray-400"
+            className="flex items-center font-bold gap-2 border-2 border-secondary px-4 py-2 text-sm rounded-md hover:bg-gray-400"
           >
-            <TiDocumentAdd size={30} />
+            <span className="hidden md:inline-block">Add New Book</span>{" "}
+            <TiDocumentAdd size={16} />
           </button>
           <button
             title="profile"
-            className="bg-tprimary px-4 py-2 text-sm rounded-md hover:bg-gray-400"
+            onClick={() => navigate("/dashboard/manage-books")}
+            className="flex items-center font-bold gap-2 bg-tprimary px-4 py-2 text-sm rounded-md hover:bg-gray-400"
           >
-            <CgProfile size={30} />
+            <span className="hidden md:inline-block"> Manage Books</span>
+            <ImBooks size={16} />
+          </button>
+          <button
+            title="orders"
+            onClick={() => navigate("/dashboard/orders")}
+            className="flex items-center font-bold gap-2 bg-tprimary px-4 py-2 text-sm rounded-md hover:bg-gray-400"
+          >
+            <span className="hidden md:inline-block"> Manage Orders</span>
+            <AiOutlineProduct size={16} />
           </button>
           <button
             title="logout"
             onClick={handleLogout}
-            className="bg-green-500 px-4 py-2 text-sm rounded-md hover:bg-green-600"
+            className="bg-green-500 px-2 py-1 text-sm rounded-md hover:bg-green-600"
           >
-            <IoLogOutOutline size={30} />
+            <IoLogOutOutline size={28} />
           </button>
         </div>
       </section>
       <section className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
-        <button
+        <div
           title="All Books"
-          onClick={() => navigate("/books")}
           className="flex items-center p-8 bg-white shadow shadow-slate-400 hover:shadow-black hover:bg-slate-200 rounded-lg"
         >
           <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-purple-600 bg-purple-100 rounded-full mr-6">
@@ -115,10 +123,9 @@ const Dashboard = () => {
             </span>
             <span className="block text-gray-500">Products</span>
           </div>
-        </button>
-        <button
+        </div>
+        <div
           title="My Sales"
-          onClick={() => setSalesModal(!salesModal)}
           className="flex items-center p-8 bg-white shadow  shadow-slate-400 hover:shadow-black hover:bg-slate-200 rounded-lg"
         >
           <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-green-600 bg-green-100 rounded-full mr-6">
@@ -143,8 +150,8 @@ const Dashboard = () => {
             </span>
             <span className="block text-gray-500">Total Sales</span>
           </div>
-        </button>
-        <button className="flex items-center p-8 bg-white shadow  shadow-slate-400 hover:shadow-black hover:bg-slate-200 rounded-lg">
+        </div>
+        <div className="flex items-center p-8 bg-white shadow  shadow-slate-400 hover:shadow-black hover:bg-slate-200 rounded-lg">
           <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
             <svg
               aria-hidden="true"
@@ -172,10 +179,9 @@ const Dashboard = () => {
               Trending Books in This Month
             </span>
           </div>
-        </button>
-        <button
+        </div>
+        <div
           title="orders"
-          onClick={() => navigate("/dashboard/orders")}
           className="flex items-center p-8 bg-white shadow shadow-slate-400 hover:shadow-black hover:bg-slate-200 rounded-lg"
         >
           <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-blue-600 bg-blue-100 rounded-full mr-6">
@@ -187,7 +193,7 @@ const Dashboard = () => {
             </span>
             <span className="block text-gray-500">Total Orders</span>
           </div>
-        </button>
+        </div>
       </section>
       <section className="grid md:grid-cols-2 xl:grid-cols-4 xl:grid-rows-3 xl:grid-flow-col gap-6">
         <div className="flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg">
@@ -374,16 +380,6 @@ const Dashboard = () => {
           </div>
         </div>
       </section>
-
-      {/*Sales Modal */}
-      {salesModal && (
-        <SalesModal
-          stats={stats}
-          isLoading={isLoading}
-          error={error}
-          onClose={() => setSalesModal(!salesModal)}
-        />
-      )}
 
       {/* Book Form Modal */}
       {bookForm && (

@@ -95,98 +95,24 @@ export const getBookById = async (req, res) => {
 
 export const updateBook = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updates = req.body;
-
-    // Validate ID
-    if (!id) {
-      return res.status(400).json({
-        success: false,
-        error: "Book ID is required",
-      });
+    // Validate request body
+    if (!req.body) {
+      return res
+        .status(400)
+        .json({ success: false, error: "No data provided!" });
     }
 
-    // Check for empty request body
-    if (Object.keys(updates).length === 0) {
-      return res.status(400).json({
-        success: false,
-        error: "No update data provided",
-      });
-    }
-
-    // Validate numerical fields
-    if (
-      (updates.oldPrice !== undefined && updates.oldPrice <= 0) ||
-      (updates.newPrice !== undefined && updates.newPrice <= 0)
-    ) {
-      return res.status(400).json({
-        success: false,
-        error: "Prices must be positive numbers",
-      });
-    }
-
-    if (updates.stock !== undefined && updates.stock < 0) {
-      return res.status(400).json({
-        success: false,
-        error: "Stock cannot be negative",
-      });
-    }
-
-    // Find book and validate existence
-    const book = await Book.findById(id);
-    if (!book) {
-      return res.status(404).json({
-        success: false,
-        error: "Book not found",
-      });
-    }
-
-    // Define allowed fields and validate updates
-    const allowedUpdates = [
-      "title",
-      "description",
-      "category",
-      "coverImage",
-      "stock",
-      "oldPrice",
-      "newPrice",
-      "trending",
-      "favourite",
-    ];
-
-    const invalidUpdates = Object.keys(updates).filter(
-      (key) => !allowedUpdates.includes(key)
+    const book = await Book.findByIdAndUpdate(
+      req.params.id,
+      req.body, // Use request body directly
+      { new: true, runValidators: true }
     );
 
-    if (invalidUpdates.length > 0) {
-      return res.status(400).json({
-        success: false,
-        error: `Invalid fields: ${invalidUpdates.join(", ")}`,
-      });
+    if (!book) {
+      return res.status(404).json({ success: false, error: "Book not found" });
     }
 
-    // Apply updates and check for changes
-    let hasChanges = false;
-    Object.entries(updates).forEach(([key, value]) => {
-      if (book[key] !== value) {
-        book[key] = value;
-        hasChanges = true;
-      }
-    });
-
-    if (!hasChanges) {
-      return res.json({
-        success: true,
-        message: "No changes detected",
-      });
-    }
-
-    // Save and return updated book
-    const updatedBook = await book.save();
-    res.json({
-      success: true,
-      data: updatedBook,
-    });
+    res.status(200).json({ success: true, data: book });
   } catch (error) {
     // Handle validation errors specifically
     if (error.name === "ValidationError") {

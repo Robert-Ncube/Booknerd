@@ -35,9 +35,11 @@ const Favourates = () => {
 
   return (
     <div className="flex flex-col items-center p-4 justify-center w-full min-h-screen overflow-y-auto">
-      <h2 className="text-2xl lg:text-5xl py-4 w-full border-b-2 font-semibold text-start font-rubik text-gray-800 mb-4">
-        Your Favourate Books
-      </h2>
+      {favourateBooks?.length !== 0 && (
+        <h2 className="text-2xl lg:text-5xl py-4 w-full border-b-2 font-semibold text-start font-rubik text-gray-800 mb-4">
+          Your Favourate Books
+        </h2>
+      )}
       <div className="w-full">
         {isLoading ? (
           <div className="flex items-center justify-center h-full">
@@ -51,9 +53,15 @@ const Favourates = () => {
             <h2 className="text-center text-2xl font-semibold font-rubik">
               No favourate books found.
             </h2>
-            <p className="text-sm text-gray-800">
-              Try adding some to your collection
-            </p>
+            {currentUser ? (
+              <p className="text-sm text-gray-800">
+                Try adding some to your collection
+              </p>
+            ) : (
+              <p className="text-sm text-gray-800">
+                Login to add books to your favourates
+              </p>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 w-full xl:grid-cols-3 gap-4 items-center">
@@ -63,14 +71,25 @@ const Favourates = () => {
           </div>
         )}
       </div>
-      <div className="flex flex-row justify-center gap-2">
-        <Link
-          to="/"
-          className="text-sm font-medium border border-slate-800 py-1 px-2 my-3 rounded-lg text-gray-600 hover:bg-gray-200"
-        >
-          View All Books
-        </Link>
-      </div>
+      {currentUser ? (
+        <div className="flex flex-row justify-center gap-2">
+          <Link
+            to="/"
+            className="text-sm font-medium border border-slate-800 py-1 px-2 my-3 rounded-lg text-gray-600 hover:bg-gray-200"
+          >
+            View All Books
+          </Link>
+        </div>
+      ) : (
+        <div className="flex flex-row justify-center gap-2">
+          <Link
+            to="/login"
+            className="text-sm font-medium border border-slate-800 py-1 px-2 my-3 rounded-lg text-gray-600 hover:bg-gray-200"
+          >
+            Login to View All Books
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
