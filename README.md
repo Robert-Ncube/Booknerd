@@ -6,7 +6,7 @@
 
 A modern MERN stack e-commerce platform for book enthusiasts, featuring user authentication, cart management, and a powerful admin dashboard.
 
-[![Booknerd Preview]([IMAGE1])](https://booknerdstore.vercel.app)  
+[![Booknerd Preview]([https://github.com/Robert-Ncube/Booknerd/blob/main/client/src/assets/github-cover.png])](https://booknerdstore.vercel.app)  
 *Replace [IMAGE1] with hero screenshot of your site*
 
 ## 🚀 Features
