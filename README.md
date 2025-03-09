@@ -6,8 +6,7 @@
 
 A modern MERN stack e-commerce platform for book enthusiasts, featuring user authentication, cart management, and a powerful admin dashboard.
 
-[![Booknerd Preview](client/src/assets/client.jpeg)](https://booknerdstore.vercel.app)  
-*Replace [IMAGE1] with hero screenshot of your site*
+[![Booknerd Preview](client/src/assets/client.jpeg)](https://booknerdstore.vercel.app)
 
 ## 🚀 Features
 
@@ -23,8 +22,7 @@ A modern MERN stack e-commerce platform for book enthusiasts, featuring user aut
 - 📈 Real-time Status Updates (Pending/Confirmed/Shipped/Delivered/Cancelled)
 - 👥 Admin Privilege System (*Work in Progress: View-Only Mode*)
 
-[![Admin Dashboard](client/src/assets/admin.jpeg)](https://booknerdstore.vercel.app)  
-*Replace [IMAGE2] with admin dashboard screenshot*
+[![Admin Dashboard](client/src/assets/admin.jpeg)](https://booknerdstore.vercel.app)
 
 ## ⚙️ Tech Stack
 
